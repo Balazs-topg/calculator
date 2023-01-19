@@ -40,9 +40,16 @@ body {
     background-color: gray;
 
     padding: 0px;
+}
+
+.text-container{
+
+    font-family: monospace;
+    font-size: 32px;
     display: flex;
     justify-content: end;
     align-items: flex-end;
+    margin: 10px;
 }
 
 .buttons-container{
@@ -109,6 +116,3 @@ body {
 .button.zero {
     grid-column: span 2;
 }
-
-
-
