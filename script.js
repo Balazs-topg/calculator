@@ -58,7 +58,10 @@ CalNine.addEventListener("click", () => {addNumOrSym("9")})
 CalZero.addEventListener("click", () => {addNumOrSym("0")})
 CalDecimal.addEventListener("click", () => {addNumOrSym(",")})
 //functionality
-CalClear.addEventListener("click", () => {currentNumber="0"; updateDisplay()})
+CalClear.addEventListener("click", () => {
+    currentNumber="0"; updateDisplay()
+    calculationEntries = []
+})
 CalPlusSlashMin.addEventListener("click", () => {
     if (currentNumber === "0") {currentNumber = ""}
     //if the number is negative, then make it positive
@@ -81,24 +84,47 @@ CalProcentage.addEventListener("click", () => {
 })
 
 //calculations
-
 let calculationEntries = []
 CalPlus.addEventListener("click", () => {
-    calculationEntries.push({"number" : currentNumber, "math" : "+"})
-    currentNumber="0"; updateDisplay()
+    calculationEntries.push({"number" : currentNumber, "math" : "plus"})
+    newOperatorPressed("math")
 })
 CalSubtraction.addEventListener("click", () => {
-    calculationEntries.push({"number" : currentNumber, "math" : "-"})
-    currentNumber="0"; updateDisplay()
+    calculationEntries.push({"number" : currentNumber, "math" : "minus"})
+    newOperatorPressed("minus")
 })
 CalDivision.addEventListener("click", () => {
-    calculationEntries.push({"number" : currentNumber, "math" : "÷"})
-    currentNumber="0"; updateDisplay()
+    calculationEntries.push({"number" : currentNumber, "math" : "divide"})
+    newOperatorPressed("divide")
 })
 CalMultiplication.addEventListener("click", () => {
-    calculationEntries.push({"number" : currentNumber, "math" : "×"})
-    currentNumber="0"; updateDisplay()
+    calculationEntries.push({"number" : currentNumber, "math" : "multiply"})
+    newOperatorPressed("multiply")
 })
+
+function newOperatorPressed(mathOperator){
+    currentNumber="0"
+    if (calculationEntries.length>=2) {
+        currentNumber = evaluate(
+            calculationEntries[0].number,
+            calculationEntries[1].number,
+            calculationEntries[0].math
+            )
+        calculationEntries = []
+        calculationEntries.push({"number" : currentNumber, "math" : mathOperator})
+        updateDisplay()
+        currentNumber="0"
+    }
+}
+
+function evaluate(numberOne, NumberTwo, mathOperator) {
+    numberOne = Number(numberOne)
+    NumberTwo = Number(NumberTwo)
+    if (mathOperator === "divide")   {return String(numberOne/NumberTwo)}
+    if (mathOperator === "multiply") {return String(numberOne*NumberTwo)}
+    if (mathOperator === "minus")    {return String(numberOne-NumberTwo)}
+    if (mathOperator === "plus")     {return String(numberOne+NumberTwo)}
+}
 
 
 
