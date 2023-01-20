@@ -102,6 +102,18 @@ CalMultiplication.addEventListener("click", () => {
     newOperatorPressed("multiply")
 })
 
+CalEqual.addEventListener("click", () => {
+    currentNumber = evaluate(
+        calculationEntries[0].number,
+        currentNumber,
+        calculationEntries[0].math
+        )
+    calculationEntries = []
+    calculationEntries.push({"number" : currentNumber, "math" : "multiply"})
+    updateDisplay()
+    currentNumber="0"
+})
+
 function newOperatorPressed(mathOperator){
     currentNumber="0"
     if (calculationEntries.length>=2) {
@@ -125,8 +137,3 @@ function evaluate(numberOne, NumberTwo, mathOperator) {
     if (mathOperator === "minus")    {return String(numberOne-NumberTwo)}
     if (mathOperator === "plus")     {return String(numberOne+NumberTwo)}
 }
-
-
-
-
-
