@@ -23,18 +23,29 @@ const CalThree = document.querySelector(".three")
 const CalZero = document.querySelector(".zero")
 const CalDecimal = document.querySelector(".decimal")
 
-let currentNumber = 0
+let currentNumber = "0"
 
 const updateDisplay = function(){CalDisplayText.textContent = currentNumber}
 
 const addNumOrSym = function (number){
-    if (currentNumber === 0) {currentNumber = ""}
+    //remove the place-holder zero
+    if (currentNumber === "0") {currentNumber = ""}
+    //stops multiple zeros from being entered in the begining
+    if (number=="0" && currentNumber.startsWith("0") && !(currentNumber.includes(","))){return 0}
+    //allow only one decimal in the string
+    if (number=="," && currentNumber.includes(",")){return 0}
+    //incase the first thing the user enters is a decimal
+    if (number=="," && currentNumber === ""){
+        currentNumber = currentNumber + "0,"
+        updateDisplay()
+        return 0
+    }
     currentNumber = currentNumber + number
     updateDisplay()
 }
 
 //asign buttons
-    //numbers
+//numbers
 CalOne.addEventListener("click", () => {addNumOrSym("1")})
 CalTwo.addEventListener("click", () => {addNumOrSym("2")})
 CalThree.addEventListener("click", () => {addNumOrSym("3")})
@@ -45,11 +56,49 @@ CalSeven.addEventListener("click", () => {addNumOrSym("7")})
 CalEight.addEventListener("click", () => {addNumOrSym("8")})
 CalNine.addEventListener("click", () => {addNumOrSym("9")})
 CalZero.addEventListener("click", () => {addNumOrSym("0")})
-CalDecimal.addEventListener("click", () => {currentNumber=0; updateDisplay()})
+CalDecimal.addEventListener("click", () => {addNumOrSym(",")})
+//functionality
+CalClear.addEventListener("click", () => {currentNumber="0"; updateDisplay()})
+CalPlusSlashMin.addEventListener("click", () => {
+    if (currentNumber === "0") {currentNumber = ""}
+    //if the number is negative, then make it positive
+    if (currentNumber.startsWith("-")){
+        currentNumber = currentNumber.slice(1)
+        updateDisplay()
+    }
+    //but if the number is positive, then make it negative
+    else if (!currentNumber.startsWith("-")){
+        currentNumber="-"+currentNumber
+        updateDisplay()
+    }
+})
+CalProcentage.addEventListener("click", () => {
+    let commaToDot = currentNumber.replace(",", ".")
+    let currentNumberNUM = Number(commaToDot)
+    let dividedBy100 = currentNumberNUM/100
+    currentNumber = String(dividedBy100).replace(".", ",")
+    updateDisplay()
+})
 
+//calculations
 
-CalClear.addEventListener("click", () => {currentNumber=0; updateDisplay()})
-
+let calculationEntries = []
+CalPlus.addEventListener("click", () => {
+    calculationEntries.push({"number" : currentNumber, "math" : "+"})
+    currentNumber="0"; updateDisplay()
+})
+CalSubtraction.addEventListener("click", () => {
+    calculationEntries.push({"number" : currentNumber, "math" : "-"})
+    currentNumber="0"; updateDisplay()
+})
+CalDivision.addEventListener("click", () => {
+    calculationEntries.push({"number" : currentNumber, "math" : "÷"})
+    currentNumber="0"; updateDisplay()
+})
+CalMultiplication.addEventListener("click", () => {
+    calculationEntries.push({"number" : currentNumber, "math" : "×"})
+    currentNumber="0"; updateDisplay()
+})
 
 
 
